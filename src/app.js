@@ -9,8 +9,19 @@ app.use(cors());
 app.use(express.json());
 
 (async () => {
+   const db = await connectToDB();
+
    app.get("/", async (req, res) => {
-      res.send("Hello World");
+      // fetch categories
+      const categoriesCursor = await db.collection("categories").find();
+      const categories = await categoriesCursor.toArray();
+      res.send({ categories });
+   });
+
+   // ======== Categories ========
+   app.post("/category", async (req, res) => {
+      const result = await db.collection("categories").insertMany(req.body);
+      res.send(result.insertedIds);
    });
 })();
 
