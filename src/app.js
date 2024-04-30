@@ -5,7 +5,9 @@ const { connectToDB } = require("../db/database");
 const app = express();
 
 // middlewares
-app.use(cors());
+app.use(
+   cors({ origin: ["http://localhost:5173", "https://artisan-d4db7.web.app"] })
+);
 app.use(express.json());
 
 (async () => {
