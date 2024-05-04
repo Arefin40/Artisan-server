@@ -19,10 +19,9 @@ app.use(express.json());
    const paintingsCollection = await db.collection("paintings");
 
    app.get("/", async (req, res) => {
-      // fetch categories
-      const categoriesCursor = await db.collection("categories").find();
-      const categories = await categoriesCursor.toArray();
-      res.send({ categories });
+      const categories = await categoriesCollection.find().toArray();
+      const paintings = await paintingsCollection.find().toArray();
+      res.send({ categories, paintings });
    });
 
    // ======== Categories endpoints ========
