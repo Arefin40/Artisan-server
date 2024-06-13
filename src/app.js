@@ -6,9 +6,7 @@ const { connectToDB } = require("../db/database");
 const app = express();
 
 // middlewares
-app.use(
-   cors({ origin: ["http://localhost:5173", "https://artisan-d4db7.web.app"] })
-);
+app.use(cors({ origin: ["http://localhost:5173", "https://artisan-d4db7.web.app"] }));
 app.use(express.json());
 
 (async () => {
@@ -47,7 +45,14 @@ app.use(express.json());
 
    // GET PAINTINGS
    app.get("/paintings", async (req, res) => {
-      const paintings = await paintingsCollection.find(req.query).toArray();
+      const { email, customizable } = req.query;
+
+      let query = {};
+      if (email) query.email = email;
+      if (customizable !== "null" && customizable !== "all")
+         query.customizable = customizable === "customizable";
+
+      const paintings = await paintingsCollection.find(query).toArray();
       res.send(paintings);
    });
 
@@ -57,7 +62,7 @@ app.use(express.json());
          { _id: new ObjectId(req.params.id) },
          { $set: req.body }
       );
-      res.send(result);
+      res.send({ response: result, updated: req.body });
    });
 
    // DELETE A PAINTING
