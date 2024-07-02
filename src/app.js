@@ -6,7 +6,15 @@ const { connectToDB } = require("../db/database");
 const app = express();
 
 // middlewares
-app.use(cors({ origin: ["http://localhost:5173", "https://artisan-d4db7.web.app"] }));
+app.use(
+   cors({
+      origin: [
+         "http://localhost:5173",
+         "https://sa-artisan.web.app",
+         "https://sa-artisan.vercel.app",
+      ],
+   })
+);
 app.use(express.json());
 
 (async () => {
